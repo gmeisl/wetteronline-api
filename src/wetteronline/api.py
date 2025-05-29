@@ -117,7 +117,10 @@ class WeatherUtils:
             script = str(script).split("({")[1].split("})")[0].strip().replace(" ", "")
             smallreturnlist = []
             for entry in script.split("\n"):
-                if entry.split(":")[0] in list(replace_keys):
+                if len(entry.split(":")) > 2:
+                    # two ":" in a row cause error, e.g. dateTime:"2025-05-29T18:59",
+                    continue
+                elif entry.split(":")[0] in list(replace_keys):
                     smallreturnlist.append(f'"{replace_keys[entry.split(":")[0]]}": {entry.split(":")[1]}')
                 else:
                     smallreturnlist.append(f'"{entry.split(":")[0]}": {entry.split(":")[1]}')
